@@ -5,8 +5,10 @@ type singletonCounter struct {
 	count int
 }
 
+// インスタンスを保持する変数も小文字にすることでエクスポートを行わない
 var counter *singletonCounter
 
+// ここでインスタンスが単一であることを保証
 func GetCounter() *singletonCounter {
 	if counter == nil {
 		counter = &singletonCounter{count: 0}
