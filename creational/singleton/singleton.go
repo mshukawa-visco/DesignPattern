@@ -1,6 +1,7 @@
 package singleton
 
 import (
+	"sync"
 	"time"
 )
 
@@ -10,12 +11,18 @@ type singleton struct {
 }
 
 var singletonInstance *singleton
+var mutex = &sync.Mutex{}
 
 func GetSingleton(id int64) *singleton {
+	// 必要以上にLockしない。
 	if singletonInstance == nil {
-		//スレッド上での振る舞いを確認するため、模擬的に生成に時間をかける
-		time.Sleep(1000)
-		singletonInstance = &singleton{id: id}
+		mutex.Lock()
+		defer mutex.Unlock()
+		if singletonInstance == nil {
+			//スレッド上での振る舞いを確認するため、模擬的に生成に時間をかける
+			time.Sleep(1000)
+			singletonInstance = &singleton{id: id}
+		}
 	}
 	return singletonInstance
 }
