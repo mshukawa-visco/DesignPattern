@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestGetSingleton(t *testing.T) {
-	instance1 := GetSingleton(3)
+func TestGetUseSyncOnce(t *testing.T) {
+	instance1 := GetUseSyncOnce(3)
 	if instance1 == nil {
 		t.Fatal("GetSingleton(): expected pointer is not nil")
 	}
@@ -16,7 +16,7 @@ func TestGetSingleton(t *testing.T) {
 	}
 
 	// インスタンス再取得
-	instance2 := GetSingleton(0)
+	instance2 := GetUseSyncOnce(0)
 	if instance2 != instance1 {
 		t.Error("expected same instance")
 	}
@@ -26,7 +26,7 @@ func TestGetSingleton(t *testing.T) {
 	}
 }
 
-func TestSingletonOnMultiThread(t *testing.T) {
+func TestUseSyncOnceOnMultiThread(t *testing.T) {
 	var ids [100]int64
 
 	var wg sync.WaitGroup
@@ -34,7 +34,7 @@ func TestSingletonOnMultiThread(t *testing.T) {
 		wg.Add(1)
 		go func(wg *sync.WaitGroup, id int64) {
 			defer wg.Done()
-			ids[id] = GetSingleton(id).GetId()
+			ids[id] = GetUseSyncOnce(id).GetId()
 		}(&wg, int64(i))
 	}
 	wg.Wait()
