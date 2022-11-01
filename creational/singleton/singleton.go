@@ -1,27 +1,19 @@
 package singleton
 
-// package外からはstructを呼ばない
-type singletonCounter struct {
-	count int
+//パッケージ外から直接呼ばない
+type singleton struct {
+	id int64
 }
 
-// インスタンスを保持する変数も小文字にすることでエクスポートを行わない
-var counter *singletonCounter
+var singletonInstance *singleton
 
-// ここでインスタンスが単一であることを保証
-func GetCounter() *singletonCounter {
-	if counter == nil {
-		counter = &singletonCounter{count: 0}
+func GetSingleton(id int64) *singleton {
+	if singletonInstance == nil {
+		singletonInstance = &singleton{id: id}
 	}
-	return counter
+	return singletonInstance
 }
 
-func (c *singletonCounter) Increment() int {
-	c.count++
-	return c.count
-}
-
-func (c *singletonCounter) Decrement() int {
-	c.count--
-	return c.count
+func (s *singleton) GetId() int64 {
+	return s.id
 }

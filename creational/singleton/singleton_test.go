@@ -4,26 +4,23 @@ import (
 	"testing"
 )
 
-//Singletonは他クラスで使う場合も含め単体テストし辛い点に留意
-func TestGetCounter(t *testing.T) {
-	// インスタンス取得
-	counter1 := GetCounter()
-	if counter1 == nil {
-		t.Fatal("GetCounter(): expected pointer is not nil")
+func TestGetSingleton(t *testing.T) {
+	instance1 := GetSingleton(3)
+	if instance1 == nil {
+		t.Fatal("GetSingleton(): expected pointer is not nil")
 	}
 
-	expectedCounter := counter1
-	if current := counter1.Increment(); current != 1 {
-		t.Errorf("Increment(): expected=%d, but got=%d", 1, current)
+	if id := instance1.GetId(); id != 3 {
+		t.Errorf("GetId(): expected=%d, but got=%d", 3, id)
 	}
 
 	// インスタンス再取得
-	counter2 := GetCounter()
-	if counter2 != expectedCounter {
+	instance2 := GetSingleton(0)
+	if instance2 != instance1 {
 		t.Error("expected same instance")
 	}
 
-	if current := counter2.Decrement(); current != 0 {
-		t.Errorf("Decrement(): expected=%d, but got=%d", 0, current)
+	if id := instance2.GetId(); id != 3 {
+		t.Errorf("GetId(): expected=%d, but got=%d", 3, id)
 	}
 }
