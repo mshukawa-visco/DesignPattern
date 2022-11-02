@@ -1,25 +1,19 @@
 package builder
 
-type HtmlBuilder struct {
-	rootTagName string
-	root        HtmlElement
+// 共通のオブジェクト組み立てルーチン
+// 必要な項目(変数, 手数)が多ければ多いほどBuilderを使う価値がある。
+type Builder interface {
+	buildStep()
+	string() string
 }
 
-func NewHtmlBuilder(rootTagName string) *HtmlBuilder {
-	return &HtmlBuilder{
-		rootTagName: rootTagName,
-		root: HtmlElement{
-			rootTagName,
-			"",
-			[]HtmlElement{},
-		},
+func NewBuilder(builderType string) Builder {
+	if builderType == "Int" {
+		return newIntObjectBuilder()
 	}
-}
 
-func (hb *HtmlBuilder) String() string {
-	return hb.root.String()
-}
-
-func (hb *HtmlBuilder) AddChildTag(tagName string, content string) {
-	hb.root.children = append(hb.root.children, HtmlElement{tagName, content, []HtmlElement{}})
+	if builderType == "String" {
+		return newStringObjectBuilder()
+	}
+	return nil
 }
