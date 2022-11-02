@@ -1,4 +1,11 @@
 # Singletonパターン
+```mermaid
+classDiagram
+class singleton
+    singleton : -instance
+    singleton : -singleton()
+    singleton : +GetInstance() singleton
+```
 ## 説明
 次を全て満たしたい場合に適用する。
 - クラスのインスタンスが1つだけであることを保証する
